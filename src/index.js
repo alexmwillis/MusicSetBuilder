@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const bluebird = require('bluebird');
 const database = require('./lib/database');
-const config = require('./config');
+const config = require('../config/server.config');
 const routes = require('./routes');
 const recordsFacade = require('./model/records/facade');
 
@@ -19,7 +19,8 @@ database.start().then((uri) => {
     {
       title: 'War Head',
       artist: 'DJ Crust',
-      length: 6 * 60,
+      image: 'https://i.scdn.co/image/b0ec13fed4164e1470813db15091f9352313c09f',
+      duration: 6 * 60,
       tempo: 180,
       vocals: false,
     });
