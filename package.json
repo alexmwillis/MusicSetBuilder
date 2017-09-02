@@ -4,7 +4,8 @@
   "description": "music app server",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js | webpack --watch",
+    "dev": "nodemon src/index.js",
+    "watch": "webpack --watch",
     "start": "node src/index.js"
   },
   "engines": {
@@ -25,6 +26,8 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
+    "@types/react": "^16.0.5",
+    "@types/react-bootstrap": "^0.31.0",
     "@types/react-dom": "^15.5.4",
     "awesome-typescript-loader": "^3.2.3",
     "css-loader": "^0.28.7",

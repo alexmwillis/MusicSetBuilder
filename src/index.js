@@ -24,6 +24,16 @@ database.start().then((uri) => {
       tempo: 180,
       vocals: false,
     });
+
+  recordsFacade.create(
+    {
+      title: 'Lighter',
+      artist: 'DJ SS',
+      image: 'https://i.scdn.co/image/b0ec13fed4164e1470813db15091f9352313c09f',
+      duration: 6 * 60,
+      tempo: 175,
+      vocals: false,
+    });
 });
 
 app.use(helmet());

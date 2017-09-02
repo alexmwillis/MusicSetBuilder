@@ -1,7 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import App from "./components/App";
+import "bootstrap/dist/css/bootstrap.css";
 
 ReactDOM.render(
-  <h2>Music App</h2>,
+  <App />,
   document.getElementById("container")
 );

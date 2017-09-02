@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const helpers = require('./helpers');
 
 module.exports = {
   entry: {
@@ -10,7 +9,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
 
   module: {
@@ -28,7 +27,7 @@ module.exports = {
       }, {
         test: /\.css$/,
         loader: 'style-loader!css-loader',
-        // loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' }),
+        //todo loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' }),
       },
     ],
   },
