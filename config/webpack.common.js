@@ -4,6 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
+    polyfills: './src/polyfills.js',
     vendor: './src/vendor.js',
     app: './src/site.tsx',
   },
@@ -26,8 +27,7 @@ module.exports = {
         loader: 'file-loader?name=assets/[name].[hash].[ext]',
       }, {
         test: /\.css$/,
-        loader: 'style-loader!css-loader',
-        //todo loader: ExtractTextPlugin.extract({ fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap' }),
+        use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader?sourceMap' }),
       },
     ],
   },

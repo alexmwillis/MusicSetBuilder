@@ -3,38 +3,26 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const bluebird = require('bluebird');
 const database = require('./lib/database');
 const config = require('../config/server.config');
 const routes = require('./routes');
 const recordsFacade = require('./model/records/facade');
+const musicService = require('./service/musicService');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const app = express();
 
 database.start().then((uri) => {
-  mongoose.Promise = bluebird;
+  mongoose.Promise = Promise;
   mongoose.connect(uri, { useMongoClient: true });
-
-  recordsFacade.create(
-    {
-      title: 'War Head',
-      artist: 'DJ Crust',
-      image: 'https://i.scdn.co/image/b0ec13fed4164e1470813db15091f9352313c09f',
-      duration: 6 * 60,
-      tempo: 180,
-      vocals: false,
-    });
-
-  recordsFacade.create(
-    {
-      title: 'Lighter',
-      artist: 'DJ SS',
-      image: 'https://i.scdn.co/image/b0ec13fed4164e1470813db15091f9352313c09f',
-      duration: 6 * 60,
-      tempo: 175,
-      vocals: false,
-    });
-});
+}).then(() => Promise.all([musicService.getTracks(), musicService.getFeatures()]))
+  .then(([tracks, features]) => {
+    const records = tracks.map(t => Object.assign({}, t, features.find(f => f.id === t.id)));
+    records.forEach(r => recordsFacade.create(r));
+  })
+  .catch(e => console.log(e));
 
 app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -1,13 +1,14 @@
 import * as React from "react";
 import { Col, Grid, ListGroup, ListGroupItem, Panel, Row, Thumbnail } from "react-bootstrap";
+import { Format } from "../lib/common";
 import Hero from "./Hero";
 
 interface IRecord {
-  _id: string;
+  id: string;
   title: string;
   artist: string;
   image: string;
-  duration: number;
+  duration_ms: number;
   tempo: number;
   vocals: boolean;
 }
@@ -18,13 +19,27 @@ interface IAppState {
 }
 
 const Record = ({ record, onClick }: { record: IRecord, onClick: React.EventHandler<any> }) => {
-  return (<Col xs={6} md={4} key={record._id}>
+  return (<Col xs={3} md={2}>
     <Thumbnail href="#" src={record.image} alt="record" onClick={onClick}>
-      <h3>{record.title}</h3><h4>{record.artist}</h4>
-      <p><strong>Tempo:</strong> {record.tempo} bpm</p>
-      <p><strong>Length:</strong> {record.duration}s</p>
+      <h4>{record.title}</h4><h5>{record.artist}</h5>
+      <p><strong>Tempo:</strong> {record.tempo.toFixed(0)} bpm</p>
+      <p><strong>Length:</strong> {Format.formatTime(new Date(record.duration_ms))}</p>
     </Thumbnail>
   </Col>
+  );
+};
+
+const SetStats = ({ set }: { set: IRecord[] }) => {
+  const setLength = set.reduce((sum, record) => sum += record.duration_ms, 0);
+  const maxTempoChange = set.reduce(({ max, last }, record) => {
+    const diff = Math.abs(last.tempo - record.tempo);
+    return (diff > max) ? { max: diff, last: record } : { max, last: record };
+  }, { max: 0, last: set[0] }).max;
+  return (
+    <div>
+      <h3>Set Length: {Format.formatTime(new Date(setLength))}</h3>
+      <h3>Max Tempo Change: {maxTempoChange.toFixed(0)} bpm</h3>
+    </div>
   );
 };
 
@@ -50,12 +65,12 @@ class App extends React.Component<{}, IAppState> {
   public render() {
     const crateNode = this.state.crate.map(record => {
       return (
-        <Record record={record} onClick={e => this.toggleRecord(record)}></Record>
+        <Record key={record.id} record={record} onClick={e => this.toggleRecord(record)}></Record>
       );
     });
     const setListNode = this.state.setList.map(record => {
       return (
-        <Record record={record} onClick={e => this.toggleRecord(record)}></Record>
+        <Record key={record.id} record={record} onClick={e => this.toggleRecord(record)}></Record>
       );
     });
     return (
@@ -66,6 +81,11 @@ class App extends React.Component<{}, IAppState> {
         <Panel header="Record Crate">
           <Row>
             {crateNode}
+          </Row>
+        </Panel>
+        <Panel>
+          <Row>
+            <Col xs={12}><SetStats set={this.state.setList}></SetStats></Col>
           </Row>
         </Panel>
         <Panel header="Set List">
