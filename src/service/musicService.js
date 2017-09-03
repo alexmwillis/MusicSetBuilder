@@ -58,8 +58,6 @@ function getFeatures() {
   return get(url).then(res => res.audio_features.map(feature => ({
     id: feature.id,
     tempo: feature.tempo,
-    vocals: feature.speechiness > 0.5,
-    danceability: feature.danceability,
   })));
 }
 
