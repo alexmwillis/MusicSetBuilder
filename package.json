@@ -1,10 +1,11 @@
 {
-  "name": "musicapp-server",
+  "name": "music-set-builder",
+  "private": true,
   "version": "0.1.0",
-  "description": "music app server",
+  "description": "Music Set Builder",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
+    "dev": "webpack && nodemon src/index.js",
     "watch": "webpack --watch",
     "start": "node src/index.js",
     "test": "mocha"

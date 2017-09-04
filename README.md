@@ -18,6 +18,7 @@ node 6.3.x or later
 run the app:
 
 ```bash
+npm install
 npm run dev
 ```
 
